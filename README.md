@@ -1,0 +1,2 @@
+**Frontend** retrieveApprovedNews can be used to retrive news articles of a a particular category and ChangeCategory function can be called  on each of the article to change its category .
+**Backend**  listTechArticlesWithoutSubcategory function can be used on the get request to get all articles of a category on which subcategory does not exist and updateCategory function can be used on put request to change the category of articles . 

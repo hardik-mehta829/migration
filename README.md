@@ -3,29 +3,17 @@
 <br />
 ```js
 async function listTechArticlesWithoutSubcategory(dynamodb, event) {
-     <br />
    const category = event['category'];
-    <br />
    const scan_params = {
-     <br />
     TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
-     <br />
     FilterExpression:
-     <br />
-      'category = :category AND attribute_not_exists(subcategory)',
-       <br />
+      'category = :category AND attribute_not_exists(subcategory)'
     ExpressionAttributeValues: {
-         <br />
       ':category': category,
-       <br />
     },
-     <br />
   };
-   <br />
    const data = await dynamodb.send(new ScanCommand(scan_params));
-    <br />
    return data.Items;
-    <br />
 }
 ```
 <br />

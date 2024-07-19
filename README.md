@@ -2,7 +2,9 @@
 
 **Backend**  listTechArticlesWithoutSubcategory function can be used on the get request to get all articles of a category on which subcategory does not exist and updateCategory function can be used on put request to change the category of articles .(At the specific route in this case GET AND PUT on nbnw/news route.) <br />
 ### Functions used in backend
-
+```
+   npm install
+```
 <br />
 ```typescript
 async function listTechArticlesWithoutSubcategory(dynamodb, event) {

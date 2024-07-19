@@ -31,131 +31,134 @@ This was the function used in backend to retrieve articles of a particular categ
 <br />
 
 async function updateCategory(dynamodb, event) {
-    <br />
-   console.log('Event is - ', event);
-    <br />
-   const newsId = event['id'];
-    <br />
-   const status = event['status'];
-    <br />
-   const update_params = {
-     <br />
-    TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
-     <br />
-    Key: { id: newsId },
-     <br />
-    UpdateExpression: 'SET category = :val,subcategory= :val',
-     <br />
-    ExpressionAttributeValues: {
-         <br />
-      ':val': status,
-       <br />
-    },
-     <br />
-   };
-    <br />
-   const data = await dynamodb.send(new UpdateCommand(update_params));
-    <br />
-   return data.Items;
-    <br />
+<br />
+console.log('Event is - ', event);
+<br />
+const newsId = event['id'];
+<br />
+const status = event['status'];
+<br />
+const update_params = {
+<br />
+TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
+<br />
+Key: { id: newsId },
+<br />
+UpdateExpression: 'SET category = :val,subcategory= :val',
+<br />
+ExpressionAttributeValues: {
+<br />
+':val': status,
+<br />
+},
+<br />
+};
+<br />
+const data = await dynamodb.send(new UpdateCommand(update_params));
+<br />
+return data.Items;
+<br />
 }
 
 <br />
 This was the function used in backend to update category of each article and replace it with new category. replace the tablename with the appropriate table name in your case.
-<br />
+
 **Functions used in Frontend**
 
-  export async function retrieveApprovedNews(): Promise<
-   <br />
-  PostFrontend[] | unknown
-   <br />
-  > {
+export async function retrieveApprovedNews(): Promise<
+<br />
+PostFrontend[] | unknown
+<br />
+
+> {
+
      <br />
-  const category = 'Business';
-   <br />
-  try {
-     <br />
-    const response = await get({
-         <br />
-      apiName: BASEAPI,
-       <br />
-      path: ApiPath.NEWS,
-       <br />
-      options: {
-         <br />
-        queryParams: {
-             <br />
-          queryType: QueryType.APPROVED,
-           <br />
-          category: category,
-           <br />
-        },
-         <br />
-      },
-       <br />
-    }).response;
-     <br />
-    return response.body.json().then((data) => {
-         <br />
-      return data;
-       <br />
-    });
-     <br />
-  } catch (error) {
-     <br />
-    console.error('Error retrieving news:', error);
-     <br />
-    throw error;
-     <br />
-  }
-   <br />
+
+const category = 'Business';
+<br />
+try {
+<br />
+const response = await get({
+<br />
+apiName: BASEAPI,
+<br />
+path: ApiPath.NEWS,
+<br />
+options: {
+<br />
+queryParams: {
+<br />
+queryType: QueryType.APPROVED,
+<br />
+category: category,
+<br />
+},
+<br />
+},
+<br />
+}).response;
+<br />
+return response.body.json().then((data) => {
+<br />
+return data;
+<br />
+});
+<br />
+} catch (error) {
+<br />
+console.error('Error retrieving news:', error);
+<br />
+throw error;
+<br />
 }
- <br />
+<br />
+}
+<br />
 This function is used in frontend to retrieve articles of a particular category (in this case it is business) ..Change the apiName,path and options depending on your project .
 <br />
 export async function ChangeCategory(
-     <br />
+<br />
 id: string
- <br />
+<br />
 ): Promise<PostFrontend | unknown> {
-     <br />
+<br />
 const category = 'Business';
- <br />
+<br />
 try {
-     <br />
+<br />
 const response = await put({
-     <br />
+<br />
 apiName: BASEAPI,
- <br />
+<br />
 path: ApiPath.NEWS,
- <br />
+<br />
 options: {
-     <br />
+<br />
 queryParams: {
-     <br />
+<br />
 id: id,
- <br />
+<br />
 queryType: QueryType.CHANGE,
- <br />
+<br />
 status: category,
- <br />
+<br />
 },
- <br />
+<br />
 },
- <br />
+<br />
 }).response;
- <br />
+<br />
 return response;
- <br />
+<br />
 } catch (error) {
-     <br />
+<br />
 console.error('Error updating category: ', error);
- <br />
+<br />
 throw error;
- <br />
+<br />
 }
- <br />
+<br />
 }
- <br />
+<br />
 This function is used in frontend to change category of each article with the new category (in this case it is business).
 <br />Change the apiName,path and options depending on your project .

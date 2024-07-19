@@ -5,6 +5,11 @@
 
 <br />
 ```
+function test() {
+  console.log("This code will have a copy button to the right of it");
+}
+```
+```
 async function listTechArticlesWithoutSubcategory(dynamodb, event) {
    const category = event['category'];
    const scan_params = {

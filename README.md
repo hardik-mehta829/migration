@@ -72,20 +72,13 @@ PostFrontend[] | unknown<br />
 const category = 'Business';<br />
 try {<br />
 const response = await get({<br />
-apiName: BASEAPI,
-<br />
-path: ApiPath.NEWS,
-<br />
-options: {
-<br />
-queryParams: {
-<br />
-queryType: QueryType.APPROVED,
-<br />
-category: category,
-<br />
-},
-<br />
+apiName: BASEAPI,<br />
+path: ApiPath.NEWS,<br />
+options: {<br />
+queryParams: {<br />
+queryType: QueryType.APPROVED,<br />
+category: category,<br />
+},<br />
 },
 <br />
 }).response;

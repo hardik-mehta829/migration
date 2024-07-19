@@ -1,12 +1,11 @@
 **Frontend** retrieveApprovedNews can be used to retrive news articles of a a particular category by changing the category variable and ChangeCategory function can be called  on each of the article to change its category mentioning the new category in the category variable.<br />
 
 **Backend**  listTechArticlesWithoutSubcategory function can be used on the get request to get all articles of a category on which subcategory does not exist and updateCategory function can be used on put request to change the category of articles .(At the specific route in this case GET AND PUT on nbnw/news route.) <br />
-
 ### Functions used in backend
 
 <br />
 ```
-    async function listTechArticlesWithoutSubcategory(dynamodb, event) {
+async function listTechArticlesWithoutSubcategory(dynamodb, event) {
    const category = event['category'];
    const scan_params = {
     TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
@@ -18,13 +17,13 @@
   };
    const data = await dynamodb.send(new ScanCommand(scan_params));
    return data.Items;
-  }
+}
 ```
 <br />
 This was the function used in backend to retrieve articles of a particular category  replace the tablename with the appropriate table name in your case.
 <br />
 ```
-    async function updateCategory(dynamodb, event) {
+async function updateCategory(dynamodb, event) {
    console.log('Event is - ', event);
    const newsId = event['id'];
    const status = event['status'];
@@ -38,7 +37,7 @@ This was the function used in backend to retrieve articles of a particular categ
    };
    const data = await dynamodb.send(new UpdateCommand(update_params));
    return data.Items;
-   }
+}
 ```
 <br />
 This was the function used in backend to update category of each article and replace it with new category. replace the tablename with the appropriate table name in your case.

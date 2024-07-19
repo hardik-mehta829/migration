@@ -3,38 +3,38 @@
 <br />
 ```
 
-```
-
 async function listTechArticlesWithoutSubcategory(dynamodb, event) {
-     <br />
-   const category = event['category'];
-    <br />
-   const scan_params = {
-     <br />
-    TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
-     <br />
-    FilterExpression:
-     <br />
-      'category = :category AND attribute_not_exists(subcategory)',
-       <br />
-    ExpressionAttributeValues: {
-         <br />
-      ':category': category,
-       <br />
-    },
-     <br />
-  };
-   <br />
-   const data = await dynamodb.send(new ScanCommand(scan_params));
-    <br />
-   return data.Items;
-    <br />
+<br />
+const category = event['category'];
+<br />
+const scan_params = {
+<br />
+TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
+<br />
+FilterExpression:
+<br />
+'category = :category AND attribute_not_exists(subcategory)',
+<br />
+ExpressionAttributeValues: {
+<br />
+':category': category,
+<br />
+},
+<br />
+};
+<br />
+const data = await dynamodb.send(new ScanCommand(scan_params));
+<br />
+return data.Items;
+<br />
 }
+
 ```
 
 <br />
 This was the function used in backend to retrieve articles of a particular category  replace the tablename with the appropriate table name in your case.
 <br />
+```
 
 async function updateCategory(dynamodb, event) {
 <br />
@@ -66,10 +66,12 @@ return data.Items;
 <br />
 }
 
+```
 <br />
 This was the function used in backend to update category of each article and replace it with new category. replace the tablename with the appropriate table name in your case.
 
 **Functions used in Frontend**
+```
 
 export async function retrieveApprovedNews(): Promise<
 <br />
@@ -117,9 +119,13 @@ throw error;
 }
 <br />
 }
+
+```
 <br />
 This function is used in frontend to retrieve articles of a particular category (in this case it is business) ..Change the apiName,path and options depending on your project .
 <br />
+```
+
 export async function ChangeCategory(
 <br />
 id: string
@@ -163,6 +169,9 @@ throw error;
 }
 <br />
 }
+
+```
 <br />
 This function is used in frontend to change category of each article with the new category (in this case it is business).
 <br />Change the apiName,path and options depending on your project .
+```

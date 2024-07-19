@@ -74,6 +74,8 @@ This was the function used in backend to update category of each article and rep
 
 **Functions used in Frontend**
 
+```
+
 export async function retrieveApprovedNews(): Promise<
 <br />
 PostFrontend[] | unknown
@@ -120,10 +122,13 @@ throw error;
 }
 <br />
 }
+```
 
 <br />
 This function is used in frontend to retrieve articles of a particular category (in this case it is business) ..Change the apiName,path and options depending on your project .
 <br />
+
+```
 
 export async function ChangeCategory(
 <br />
@@ -168,6 +173,7 @@ throw error;
 }
 <br />
 }
+```
 
 <br />
 This function is used in frontend to change category of each article with the new category (in this case it is business).

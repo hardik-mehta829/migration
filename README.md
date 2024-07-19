@@ -3,31 +3,7 @@
 **Backend**  listTechArticlesWithoutSubcategory function can be used on the get request to get all articles of a category on which subcategory does not exist and updateCategory function can be used on put request to change the category of articles .(At the specific route in this case GET AND PUT on nbnw/news route.) <br />
 ### Functions used in backend
 <br />
-async function listTechArticlesWithoutSubcategory(dynamodb, event) {
-     <br />
-   const category = event['category'];
-    <br />
-   const scan_params = {
-     <br />
-    TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
-     <br />
-    FilterExpression:
-     <br />
-      'category = :category AND attribute_not_exists(subcategory)',
-       <br />
-    ExpressionAttributeValues: {
-         <br />
-      ':category': category,
-       <br />
-    },
-     <br />
-  };
-   <br />
-   const data = await dynamodb.send(new ScanCommand(scan_params));
-    <br />
-   return data.Items;
-    <br />
-}
+<button onclick="copyToClipboard('async function listTechArticlesWithoutSubcategory(dynamodb, event) {\\n const category = event[\\'category\\'];\\n const scan_params = {\\n TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,\\n FilterExpression: \\'category = :category AND attribute_not_exists(subcategory)\\',\\n ExpressionAttributeValues: {\\n \':category\': category,\\n },\\n };\\n const data = await dynamodb.send(new ScanCommand(scan_params));\\n return data.Items;\\n}')">Copy Code</button>
 <br />
 This was the function used in backend to retrieve articles of a particular category  replace the tablename with the appropriate table name in your case.
 <br />

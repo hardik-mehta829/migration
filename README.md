@@ -67,19 +67,11 @@ This was the function used in backend to update category of each article and rep
 
 export async function retrieveApprovedNews(): Promise<
 <br />
-PostFrontend[] | unknown
-<br />
-
-> {
-
-     <br />
-
-const category = 'Business';
-<br />
-try {
-<br />
-const response = await get({
-<br />
+PostFrontend[] | unknown<br />
+> {<br />
+const category = 'Business';<br />
+try {<br />
+const response = await get({<br />
 apiName: BASEAPI,
 <br />
 path: ApiPath.NEWS,

@@ -37,6 +37,7 @@ return data.Items;
 This was the function used in backend to retrieve articles of a particular category  replace the tablename with the appropriate table name in your case.
 <br />
 
+```
 async function updateCategory(dynamodb, event) {
 <br />
 console.log('Event is - ', event);
@@ -66,6 +67,8 @@ const data = await dynamodb.send(new UpdateCommand(update_params));
 return data.Items;
 <br />
 }
+```
+
 <br />
 This was the function used in backend to update category of each article and replace it with new category. replace the tablename with the appropriate table name in your case.
 

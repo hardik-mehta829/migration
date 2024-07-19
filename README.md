@@ -1,7 +1,9 @@
 **Functions used in backend**
 
 <br />
+
 ```
+
 
 async function listTechArticlesWithoutSubcategory(dynamodb, event) {
 <br />

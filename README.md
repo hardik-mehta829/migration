@@ -3,6 +3,8 @@
 <br />
 ```
 
+```
+
 async function listTechArticlesWithoutSubcategory(dynamodb, event) {
      <br />
    const category = event['category'];
@@ -28,8 +30,8 @@ async function listTechArticlesWithoutSubcategory(dynamodb, event) {
    return data.Items;
     <br />
 }
-
 ```
+
 <br />
 This was the function used in backend to retrieve articles of a particular category  replace the tablename with the appropriate table name in your case.
 <br />

@@ -3,7 +3,7 @@
 
 <br />
 ```js
-async function listTechArticlesWithoutSubcategory(dynamodb, event) {
+function listTechArticlesWithoutSubcategory(dynamodb, event) {
    const category = event['category'];
    const scan_params = {
     TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,

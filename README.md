@@ -1,7 +1,7 @@
 ### Functions used in backend
 
 <br />
-```html
+```js
 async function listTechArticlesWithoutSubcategory(dynamodb, event) {
      <br />
    const category = event['category'];

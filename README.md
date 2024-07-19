@@ -70,93 +70,93 @@ export async function retrieveApprovedNews(): Promise<
 PostFrontend[] | unknown
 <br />
 
-> {
-> <br />
-> const category = 'Business';
-> <br />
-> try {
-> <br />
-> const response = await get({
-> <br />
-> apiName: BASEAPI,
-> <br />
-> path: ApiPath.NEWS,
-> <br />
-> options: {
-> <br />
-> queryParams: {
-> <br />
-> queryType: QueryType.APPROVED,
-> <br />
-> category: category,
-> <br />
-> },
-> <br />
-> },
-> <br />
-> }).response;
-> <br />
-> return response.body.json().then((data) => {
-> <br />
-> return data;
-> <br />
-> });
-> <br />
-> } catch (error) {
-> <br />
-> console.error('Error retrieving news:', error);
-> <br />
-> throw error;
-> <br />
-> }
-> <br />
-> }
-> <br />
-> This function is used in frontend to retrieve articles of a particular category (in this case it is business) ..Change the apiName,path and options depending on your project .
-> <br />
-> export async function ChangeCategory(
-> <br />
-> id: string
-> <br />
-> ): Promise<PostFrontend | unknown> {
-> <br />
-> const category = 'Business';
-> <br />
-> try {
-> <br />
-> const response = await put({
-> <br />
-> apiName: BASEAPI,
-> <br />
-> path: ApiPath.NEWS,
-> <br />
-> options: {
-> <br />
-> queryParams: {
-> <br />
-> id: id,
-> <br />
-> queryType: QueryType.CHANGE,
-> <br />
-> status: category,
-> <br />
-> },
-> <br />
-> },
-> <br />
-> }).response;
-> <br />
-> return response;
-> <br />
-> } catch (error) {
-> <br />
-> console.error('Error updating category: ', error);
-> <br />
-> throw error;
-> <br />
-> }
-> <br />
-> }
-> <br />
-> This function is used in frontend to change category of each article with the new category (in this case it is business).
-> <br />Change the apiName,path and options depending on your project .
+{
+<br />
+const category = 'Business';
+<br />
+try {
+<br />
+const response = await get({
+<br />
+apiName: BASEAPI,
+<br />
+path: ApiPath.NEWS,
+<br />
+options: {
+<br />
+queryParams: {
+<br />
+queryType: QueryType.APPROVED,
+<br />
+category: category,
+<br />
+},
+<br />
+},
+<br />
+}).response;
+<br />
+return response.body.json().then((data) => {
+<br />
+return data;
+<br />
+});
+<br />
+} catch (error) {
+<br />
+console.error('Error retrieving news:', error);
+<br />
+throw error;
+<br />
+}
+<br />
+}
+<br />
+This function is used in frontend to retrieve articles of a particular category (in this case it is business) ..Change the apiName,path and options depending on your project .
+<br />
+export async function ChangeCategory(
+<br />
+id: string
+<br />
+): Promise<PostFrontend | unknown> {
+<br />
+const category = 'Business';
+<br />
+try {
+<br />
+const response = await put({
+<br />
+apiName: BASEAPI,
+<br />
+path: ApiPath.NEWS,
+<br />
+options: {
+<br />
+queryParams: {
+<br />
+id: id,
+<br />
+queryType: QueryType.CHANGE,
+<br />
+status: category,
+<br />
+},
+<br />
+},
+<br />
+}).response;
+<br />
+return response;
+<br />
+} catch (error) {
+<br />
+console.error('Error updating category: ', error);
+<br />
+throw error;
+<br />
+}
+<br />
+}
+<br />
+This function is used in frontend to change category of each article with the new category (in this case it is business).
+<br />Change the apiName,path and options depending on your project .

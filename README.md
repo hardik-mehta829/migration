@@ -1,4 +1,4 @@
-** Functions used in backend **
+**Functions used in backend**
 
 <br />
 async function listTechArticlesWithoutSubcategory(dynamodb, event) {
@@ -63,7 +63,7 @@ async function updateCategory(dynamodb, event) {
 <br />
 This was the function used in backend to update category of each article and replace it with new category. replace the tablename with the appropriate table name in your case.
 <br />
-** Functions used in Frontend **
+**Functions used in Frontend**
 
   export async function retrieveApprovedNews(): Promise<
    <br />

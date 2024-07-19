@@ -1,3 +1,4 @@
+<button onclick="copyToClipboard('export async function retrieveApprovedNews(): Promise<PostFrontend[] | unknown> {\\n const category = \\'Business\\';\\n try {\\n const response = await get({\\n apiName: BASEAPI,\\n path: ApiPath.NEWS,\\n options: {\\n queryParams: {\\n queryType: QueryType.APPROVED,\\n category: category,\\n },\\n },\\n }).response;\\n return response.body.json().then((data) => {\\n return data;\\n });\\n } catch (error) {\\n console.error(\\'Error retrieving news:\\', error);\\n throw error;\\n }\\n}')">Copy Code</button>
 ### Functions used in backend
 
 <br />

@@ -6,7 +6,7 @@
    npm install
 ```
 <br />
-```typescript
+```
 async function listTechArticlesWithoutSubcategory(dynamodb, event) {
    const category = event['category'];
    const scan_params = {

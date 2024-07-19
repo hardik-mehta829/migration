@@ -7,19 +7,19 @@
 ```
 <br />
 ```
-async function listTechArticlesWithoutSubcategory(dynamodb, event) {
-   const category = event['category'];
-   const scan_params = {
-    TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
-    FilterExpression:
-      'category = :category AND attribute_not_exists(subcategory)',
-    ExpressionAttributeValues: {
-      ':category': category,
-    },
-  };
-   const data = await dynamodb.send(new ScanCommand(scan_params));
-   return data.Items;
-}
+   async function listTechArticlesWithoutSubcategory(dynamodb, event) {
+      const category = event['category'];
+      const scan_params = {
+       TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
+       FilterExpression:
+         'category = :category AND attribute_not_exists(subcategory)',
+       ExpressionAttributeValues: {
+         ':category': category,
+       },
+     };
+      const data = await dynamodb.send(new ScanCommand(scan_params));
+      return data.Items;
+   }
 ```
 <br />
 This was the function used in backend to retrieve articles of a particular category  replace the tablename with the appropriate table name in your case.

@@ -20,8 +20,11 @@ Some important points :
 currently the APi nbnwreactfrontend does not have permission to update articles in NBNWNewsTable so use the nbnweditorfinal api to update the items of this particular table.
 
 **Functions used in backend**
+<br />
 Steps involved
+<br />
 1 Use these functions defined here in your api change the tablename,filterexpression,expressionattributevalues depending on table attributes.
+<br />
 2 Run this command to update backend in cloud
 
 ```
@@ -105,6 +108,7 @@ This was the function used in backend to update category of each article and rep
 Steps involved
 <br />
 Use these functions defined here in your frontend.
+<br />
 
 ```
 

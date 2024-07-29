@@ -1,313 +1,207 @@
-# Migrating categories and sub categories in a dynamodb table
+# Prior Knowledge <br />
 
-This document aims to map the categories and subcategories of articles present in dynamodb table with new categories and sub categories (whenever necessary) .
+What are packages .
 
-## 0. Prerequisite knowledge/work done
+# Introduction to Codeartifact
 
-1. Each table stores what kind of data and what interface is used to store the article .
-2. Knowledge about how to create APIs using NodeJs and how do they work .
-
-## 1. Prior Understanding
-
-Some important points :
-
-1. when to use different dynamodb commands like getcommand,scancommand,putcommand .what is event object and how to use it .
-2. how to write parameters object to pass in these different commands.
-3. how to use get,put,get,del command from aws-amplify/api library and how to pass query parameters.
-
-## API permissions
-
-currently the APi nbnwreactfrontend does not have permission to update articles in NBNWNewsTable so use the nbnweditorfinal api to update the items of this particular table.
-
-**Functions used in backend**
+AWS CodeArtifact is a secure , managed artifact repository service that helps organizations to store and share software packages for application development. we are using codeartifact with npm. CodeArtifact helps reduce the need for us to manage our own artifact storage system or worry about scaling its infrastructure. There are no limits on the number or total size of the packages that we can store in a CodeArtifact repository.
 <br />
+We can create a connection between our private CodeArtifact repository and an external, public repository, such as npmjs.com or Maven Central. CodeArtifact will then fetch and store packages on demand from the public repository when they're requested by a package manager. This makes it more convenient to consume open-source dependencies used by your application and helps ensure they're always available for builds and development. We can also publish private packages to a CodeArtifact repository. This helps us share proprietary software components between multiple applications and development teams in your organization.
+<br />
+CodeArtifact stores software packages in repositories. Repositories are polyglot—a single repository can contain packages of any supported type. Every CodeArtifact repository is a member of a single CodeArtifact domain .
+<br />
+CodeArtifact requires users to authenticate with the service in order to publish or consume package versions. You must authenticate to the CodeArtifact service by creating an authorization token using your AWS credentials. Packages in CodeArtifact repositories cannot be made publicly available.<br />
+
+## 0. Domain
+
+Repositories are aggregated into a higher-level entity known as a domain. All package assets and metadata are stored in the domain, but they are consumed through repositories. <br />
+Each repository is a member of a single domain and can't be moved to a different domain.<br />
+
+## 1.Repository
+
+A CodeArtifact repository contains a set of package versions<br />
+
+## 2. Upstream repository
+
+<br />
+One repository is upstream of another when the package versions in it can be accessed from the repository endpoint of the downstream repository. This approach effectively merges the contents of the two repositories from the point of view of a client. Using CodeArtifact, you can create an upstream relationship between two repositories.
+
+# Permissions
+
+Grant the IAM user access to CodeArtifact.<br />
+Use the AWSCodeArtifactAdminAccess AWS managed policy. The following snippet shows the contents of this policy.<br />
 
 ```
-
-
-async function listTechArticlesWithoutSubcategory(dynamodb, event) {
-
-const category = event['category'];
-
-const scan_params = {
-
-TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
-
-FilterExpression:
-
-'category = :category AND attribute_not_exists(subcategory)',
-
-ExpressionAttributeValues: {
-
-':category': category,
-
-},
-
-};
-
-const data = await dynamodb.send(new ScanCommand(scan_params));
-
-return data.Items;
-
-}
-
-```
-
-<br />
-This function, **listTechArticlesWithoutSubcategory**, is written in JavaScript and is designed to interact with an Amazon DynamoDB database. The function scans a DynamoDB table for items that belong to a specified category and do not have a subcategory attribute. Let's break down the function in detail.<br />
-
-**Components Involved**
-
-1. dynamodb: This is an instance of an AWS DynamoDB client. It is used to interact with the DynamoDB service to perform operations such as scans, queries, inserts, and deletes.
-
-2. event: This object typically contains the input parameters passed to the function, often from an API request or another service. In this context, event includes a key category, which specifies the category of articles we want to filter.
-
-**Scan parameters**
-
-1. TableName: The name of the DynamoDB table to scan. It is retrieved from environment variables.
-2. FilterExpression: This is a condition that each item in the table must meet to be included in the result. Here, it checks that the item's category attribute equals the specified category and that the subcategory attribute does not exist.
-3. ExpressionAttributeValues: This maps the placeholder :category in the filter expression to the actual value of the category.
-
-**Environment Variables**
-<br />
-process.env.STORAGE_NBNWNEWSTABLE_NAME: This is an environment variable that stores the name of the DynamoDB table. Environment variables are used to pass configuration settings and sensitive data (like database table names) without hardcoding them in the source code.
-<br />
-Change the scan parameters and environment variables in the function according to your project.
-
-**Steps Involved**
-
-1. Copy this function and paste it in " amplify/backend/function/path/news/get.js" this directory and then export this function using module.exports={listTechArticlesWithoutSubcategory}
-   <br />
-
-2. in the file where you need this function import it using import {listTechArticlesWithoutSubcategory}=require("file_path") .
-
-3. Run amplify push in the terminal to update the backend .
-
-```
-amplify push
-
-```
-
-<br />
-
-```
-async function updateCategory(dynamodb, event) {
-
-console.log('Event is - ', event);
-
-const newsId = event['id'];
-
-const status = event['status'];
-
-const update_params = {
-
-TableName: process.env.STORAGE_NBNWNEWSTABLE_NAME,
-
-Key: { id: newsId },
-
-UpdateExpression: 'SET category = :val,subcategory= :val',
-
-ExpressionAttributeValues: {
-
-':val': status,
-
-},
-
-};
-
-const data = await dynamodb.send(new UpdateCommand(update_params));
-
-return data.Items;
-
-}
-```
-
-<br />
-
-**Explanation of the Function**
-The updateCategory function is designed to update the category and subcategory attributes of a specific item in a DynamoDB table. The item's key is specified by the id provided in the event object.
-
-**Update Parameters:**
-TableName: The name of the DynamoDB table to update. It is retrieved from environment variables.<br />
-Key: This specifies the primary key of the item to update. The key is an object with the id attribute set to newsId.<br />
-
-UpdateExpression: This is an expression that defines how to update the item's attributes. Here, it sets both the category and subcategory attributes to the value of :val.<br />
-
-ExpressionAttributeValues: This maps the placeholder :val in the update expression to the actual value of status.
-<br />
-
-Change the scan parameters and environment variables in the function according to your project.
-
-**Steps Involved**
-
-1. Copy this function and paste it in "amplify/backend/function/src/path/news/put.js" this directory and then export this function using module.exports={updateCategory}
-   <br />
-
-2. in the file where you need this function import it using import {updateCategory}=require("file_path") .
-
-3. Run amplify push in the terminal to update the backend .
-   <br />
-
-```
-amplify push
-
-```
-
-**Functions used in Frontend**
-
-<br />
-Copy and paste both of these functions in src/data/news.tsx <br />
-**Explanation of the Function**
-The retrieveApprovedNews function is an asynchronous function designed to fetch approved news articles from an API. It returns a promise that resolves to an array of PostFrontend objects or an unknown type in case of an error.
-
-<br />
-
-**Components Involved**
-
-1. category: A constant string that specifies the category of news articles to retrieve, which in this case is set to 'Business'.
-2. try-catch block: This is used to handle errors that might occur during the API call.
-
-<br />
-This makes an asynchronous get request to an API:
-<br />
-apiName: The base API name, specified by the constant BASEAPI.<br />
-path: The specific path for the news endpoint, specified by the constant ApiPath.NEWS.<br />
-options: An object containing query parameters for the API call:<br />
-queryType: A constant QueryType.APPROVED that specifies the type of query, in this case, to retrieve approved news articles.<br />
-category: The category of news articles, set to the previously declared constant category.<br />
-
-**TypeScript Types**
-
-1. PostFrontend: This is a TypeScript interface or type that represents the structure of the news articles returned by the API. It is not defined in the provided code but would typically include properties such as id, title, content, category, etc.
-2. Promise<PostFrontend[] | unknown>: The function returns a promise that resolves to an array of PostFrontend objects or an unknown type in case of an error.
-
-<br />
-
-This makes an asynchronous get request to an API:
-
-apiName: The base API name, specified by the constant BASEAPI.
-path: The specific path for the news endpoint, specified by the constant ApiPath.NEWS.
-options: An object containing query parameters for the API call:
-queryType: A constant QueryType.APPROVED that specifies the type of query, in this case, to retrieve approved news articles.
-category: The category of news articles, set to the previously declared constant category.
-
-```
-
-export async function retrieveApprovedNews(): Promise<
-
-PostFrontend[] | unknown
 {
-
-const category = 'Business';
-
-try {
-
-const response = await get({
-
-apiName: BASEAPI,
-
-path: ApiPath.NEWS,
-
-options: {
-
-queryParams: {
-
-queryType: QueryType.APPROVED,
-
-category: category,
-
-},
-
-},
-
-}).response;
-
-return response.body.json().then((data) => {
-
-return data;
-
-});
-
-} catch (error) {
-
-console.error('Error retrieving news:', error);
-
-throw error;
-
+   "Version": "2012-10-17",
+   "Statement": [
+      {
+         "Action": [
+            "codeartifact:*"
+         ],
+         "Effect": "Allow",
+         "Resource": "*"
+      },
+      {
+         "Effect": "Allow",
+         "Action": "sts:GetServiceBearerToken",
+         "Resource": "*",
+            "Condition": {
+               "StringEquals": {
+                  "sts:AWSServiceName": "codeartifact.amazonaws.com"
+               }
+            }
+      }
+    ]
 }
+```
 
-}
+# Steps to create repository
+
+1. Sign in to the AWS Management Console and open the AWS CodeArtifact console at https://console.aws.amazon.com/codesuite/codeartifact/start. For more information, see Setting up with AWS CodeArtifact.
+
+2. Go to domains->nbnw-domain
+3. Choose Create repository.
+
+4. In Repository name, enter repo-name
+
+(Optional) In Repository Description, enter an optional description for your repository.
+
+4. In Public upstream repositories, select npm-store to create a repository connected to npmjs that is upstream from your my-repo repository.
+
+5. CodeArtifact assigns the name npm-store to this repository for you. All packages available in the upstream repository npm-store are also available to its downstream repository, repo-name.
+
+6. Choose Next.
+
+7. In AWS account, choose This AWS account.
+
+8.
+
+9. Expand Additional configuration.
+
+10. You must use an AWS KMS key (KMS key) to encrypt all assets in your domain. You can use an AWS managed key or a KMS key that you manage:
+    <br />
+    Choose AWS managed key if you want to use the default AWS managed key.
+    <br />
+    Choose Customer managed key if you want to use a KMS key that you manage. To use a KMS key that you manage, in Customer managed key ARN, search for and choose the KMS key.
+    <br />
+    For more information, see AWS managed key and Customer managed key in the AWS Key Management Service Developer Guide.
+
+11. Choose Next.
+
+In Review and create, review what CodeArtifact is creating for you.
+<br />
+Package flow shows how my-domain, my-repo, and npm-store are related.
+<br />
+Step 1: Create repository shows details about my-repo and npm-store.
+<br />
+When you're ready, choose Create repository.
+<br />
+On the my-repo page, choose View connection instructions, and then choose npm.
+<br />
+Use the AWS CLI to run the login command shown under Configure your npm client using this AWS CLI CodeArtifact command.
+<br />
+
+```
+aws codeartifact login --tool npm --repository nbnw-repo --domain nbnw-domain --domain-owner 215750026173 --region us-east-1
+```
+
+replace nbnw-repo with the name of your repo and replace 215750026173 with your 12 digit id
+
+You should receive output confirming your login succeeded.
+
+<br />
+Successfully configured npm to use AWS CodeArtifact repository https://my-domain-111122223333.d.codeartifact.us-east-2.amazonaws.com/npm/my-repo/
+<br />
+Login expires in 12 hours at 2020-10-08 02:45:33-04:00
+<br />
+
+# Automate publishing of package to repo
+
+1. Go to nbnworg and a create new repository their.
+1. Go to github settings->secrets and variables->actions.
+1. Set the variables like <br />
+   AWS_REGION:us-east-1 <br />
+   CODEARTIFACT_REPOSITORY:the name of your repo in codeartifact .<br />
+   CODEARTIFACT_DOMAIN_OWNER :your 12-digit-id through which you log in to the console.<br />
+   CODEARTIFACT_DOMAIN :the domain name .<br />
+   AWS_ACCESS_KEY_ID : as provided to you .<br />
+   AWS_SECRET_ACCESS_KEY : as provided to you .<br />
+   No create a folder .github in your project directory .inside it create a folder called workflows and inside create a file called publish.yml and copy paste the code provided below
+
+```
+
+name: Publish to CodeArtifact
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to CodeArtifact
+        run: |
+          aws codeartifact login --tool npm --repository ${{ secrets.CODEARTIFACT_REPOSITORY }} --domain ${{ secrets.CODEARTIFACT_DOMAIN }} --domain-owner ${{ secrets.CODEARTIFACT_DOMAIN_OWNER }} --region ${{ secrets.AWS_REGION }}
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build the package
+        run: npm run build
+
+      - name: Publish to CodeArtifact
+        run: npm publish
 
 ```
 
 <br />
+The provided YAML file is a GitHub Actions workflow configuration that automates the process of publishing an npm package to AWS CodeArtifact. Let's break down each section to understand how it works.<br />
+Overview
+<br />
+The workflow is triggered whenever there is a push to the main branch, except when only the README.md file is modified. It runs on a Windows environment and performs the following steps:
+<br />
+Checks out the code.<br />
+Configures AWS credentials.<br />
+Logs in to AWS CodeArtifact.<br />
+Installs npm dependencies.<br />
+Builds the npm package.<br />
+Publishes the package to AWS CodeArtifact.<br />
 
-**Explanation of the Function**
-
-The ChangeCategory function is an asynchronous function designed to update the category of a news article in an API. It returns a promise that resolves to a PostFrontend object or an unknown type in case of an error. <br />
-
-**Components Involved**
-
-id: A string parameter representing the unique identifier of the news article whose category is to be changed.<br />
-category: A constant string that specifies the new category for the news article, which in this case is set to 'Business'.<br />
-try-catch block: This is used to handle errors that might occur during the API call.<br />
-
-This makes an asynchronous put request to an API:
-
-1. apiName: The base API name, specified by the constant BASEAPI.
-2. path: The specific path for the news endpoint, specified by the constant ApiPath.NEWS.
-3. options: An object containing query parameters for the API call:
-4. id: The unique identifier of the news article to update.
-5. queryType: A constant QueryType.CHANGE that specifies the type of query, in this case, to change the category of the news article.
-6. status: The new category for the news article, set to the previously declared constant category.
-
-to use this function pass the id of article in it as parameter
+Now create a package.json file <br />
+Use the sample provided below :<br />
 
 ```
-
-export async function ChangeCategory(
-
-id: string
-
-): Promise<PostFrontend | unknown> {
-
-const category = 'Business';
-
-try {
-
-const response = await put({
-
-apiName: BASEAPI,
-
-path: ApiPath.NEWS,
-
-options: {
-
-queryParams: {
-
-id: id,
-
-queryType: QueryType.CHANGE,
-
-status: category,
-
-},
-
-},
-
-}).response;
-
-return response;
-
-} catch (error) {
-
-console.error('Error updating category: ', error);
-
-throw error;
-
-}
+{
+  "name": "nbnw-ui-constants",
+  "version": "1.0.6",
+  "main": "main.js",
+  "types": "typeDeclaration.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "NBNW",
+  "license": "MIT"
 }
 
 ```
 
-Use the retireveApprovedNews() function to get all articles of a partiular category and then using a for loop iterate over the articles array run the ChangeCategory() function for each of the article .
+change the name of package to whatever name you like . Change the version to 1.0.0 and whenever you push changes to code update the version to 1.0.1 .The types field is used to specify the typedeclarations of functions ,objects,enums and interfaces if not provided error is thrown by typescript compiler .
+Now create a main.js file beacuse it is the entry point for the package .<br />
+The final export of code will be done from main.js file .Kindly check nbnw-ui-constants and nbnw-ui-components repo in bnw org for better clarity.

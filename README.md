@@ -127,7 +127,7 @@ Login expires in 12 hours at 2020-10-08 02:45:33-04:00
    CODEARTIFACT_DOMAIN :the domain name .<br />
    AWS_ACCESS_KEY_ID : as provided to you .<br />
    AWS_SECRET_ACCESS_KEY : as provided to you .<br />
-   No create a folder .github in your project directory .inside it create a folder called workflows and inside create a file called publish.yml and copy paste the code provided below
+   Now create a folder **.github** in your project directory .inside it create a folder called **workflows** and inside create a file called publish.yml and copy paste the code provided below
 
 ```
 
@@ -202,6 +202,6 @@ Use the sample provided below :<br />
 
 ```
 
-change the name of package to whatever name you like . Change the version to 1.0.0 and whenever you push changes to code update the version to 1.0.1 .The types field is used to specify the typedeclarations of functions ,objects,enums and interfaces if not provided error is thrown by typescript compiler .
+change the name of package to whatever name you like . Change the version to 1.0.0 and whenever you push changes to code update the version to 1.0.1 and on each subsequent update the version number should be changed to 1.0.2,1.0.3 and so on .The types field is used to specify the typedeclarations of functions ,objects,enums and interfaces if not provided error is thrown by typescript compiler .
 Now create a main.js file beacuse it is the entry point for the package .<br />
-The final export of code will be done from main.js file .Kindly check nbnw-ui-constants and nbnw-ui-components repo in bnw org for better clarity.
+The final export of code will be done from main.js file .Kindly check nbnw-ui-constants and nbnw-ui-components repo in nbnw org for better clarity.
